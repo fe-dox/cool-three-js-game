@@ -18,6 +18,8 @@ class Utils {
     }
 
     static NewId() {
-        return Utils.convertBase(String(Date.now()) + String(Math.floor(Math.random() * 100)),10,71)
+        return Utils.convertBase(String(Date.now()) + String(Math.floor(Math.random() * 100)), 10, 71)
     }
 }
+
+module.exports = Utils;
