@@ -20,11 +20,11 @@ class Socket {
                 if (err !== undefined || doc != null) {
                     cb({
                         id: null,
-                        error: err ?? "Room already exists",
+                        error: err,
                     })
                     return;
                 }
-                
+
                 this.roomsDb.insert({_id: newId})
 
                 cb({
@@ -55,7 +55,7 @@ class Socket {
                 if (err !== undefined || doc != null) {
                     cb({
                         id: null,
-                        error: err ?? "Room is full",
+                        error: err
                     })
                     return;
                 }
@@ -75,6 +75,9 @@ class Socket {
             })
         })
 
+        socket.on('emote', (emoteId) => {
+            socket.emit('emote', emoteId)
+        })
 
     }
 

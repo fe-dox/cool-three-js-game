@@ -11,7 +11,12 @@ const server = http.createServer(app)
 const sockets = new Socket(server)
 
 app.use(helmet())
-app.use(express.static(path.join(__dirname, 'public')))
+if (process.env.ENVIRONMENT === "production") {
+    app.use(express.static(path.join(__dirname, 'public')))
+
+} else {
+    app.use(express.static(path.join(__dirname, '../client/dist')))
+}
 
 
 server.listen(port, () => {
