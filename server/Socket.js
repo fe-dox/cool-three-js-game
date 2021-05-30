@@ -17,17 +17,19 @@ class Socket {
         console.log("User connected to socket")
         socket.on('create_room', (cb) => {
             const newId = Utils.NewId();
+            console.log("Creating room", newId)
             this.roomsDb.findOne({_id: newId}, (err, doc) => {
                 if (err !== undefined || doc != null) {
                     cb({
                         id: null,
                         error: err,
                     })
+                    console.log(err)
                     return;
                 }
 
                 this.roomsDb.insert({_id: newId})
-
+                console.log("ok")
                 cb({
                     id: newId,
                     error: undefined,
