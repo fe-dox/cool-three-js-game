@@ -11,7 +11,7 @@ class Socket {
         this.roomsDb = Database.GetDatabase("rooms")
         console.log(this.roomsDb)
         this.io = new Server(server)
-        this.io.on('connection', this.onConnect)
+        this.io.on('connection', (socket) => this.onConnect(socket))
     }
 
     onConnect(socket) {
@@ -20,17 +20,16 @@ class Socket {
             const newId = Utils.NewId();
             console.log("Creating room", newId)
             this.roomsDb.findOne({_id: newId}, (err, doc) => {
-                if (err !== undefined || doc != null) {
+                if (!!err || doc != null) {
                     cb({
                         id: null,
                         error: err,
                     })
-                    console.log(err)
+                    console.log("Db error", err, "Document", doc)
                     return;
                 }
 
                 this.roomsDb.insert({_id: newId})
-                console.log("ok")
                 cb({
                     id: newId,
                     error: undefined,
@@ -40,7 +39,7 @@ class Socket {
 
         socket.on('check_room', (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
-                if (err !== undefined || doc === null) {
+                if (!!err|| doc === null) {
                     cb({
                         roomExists: false,
                         err: err
@@ -56,7 +55,7 @@ class Socket {
 
         socket.on('join_room', (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
-                if (err !== undefined || doc != null) {
+                if (!!err || doc != null) {
                     cb({
                         id: null,
                         error: err
