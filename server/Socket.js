@@ -24,6 +24,8 @@ class Socket {
                     })
                     return;
                 }
+                
+                this.roomsDb.insert({_id: newId})
 
                 cb({
                     id: newId,
@@ -72,6 +74,8 @@ class Socket {
                 }
             })
         })
+
+
     }
 
 
