@@ -1,23 +1,16 @@
 import { MD2Loader } from 'three/examples/jsm/loaders/MD2Loader.js';
-import { Mesh, TextureLoader, MeshPhongMaterial, MeshBasicMaterial,TextSprite } from "three"
+import { Mesh, TextureLoader, MeshPhongMaterial } from "three"
 import modelTex from "./assets/mario.jpg"
 
 export default class Model {
-    constructor(scene, manager, isLeft) {
+    constructor(scene, manager, ID) {
         this.scene = scene;
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
-        this.isLeft = isLeft;
+        this.ID = ID;
         this.offset = 60;
-
-        // let sprite = new TextSprite({
-        //     text: 'Hello World!',
-        //     fontFamily: 'Arial, Helvetica, sans-serif',
-        //     fontSize: 12,
-        //     color: '#ffbbff',
-        //   });
-        //   this.scene.add(sprite);
+        
     }
 
     load(path) {
@@ -35,18 +28,15 @@ export default class Model {
                     map: new TextureLoader().load(modelTex), // dowolny plik png, jpg
                     morphTargets: true // animowanie materiału modelu
                 }))
-                console.log(this.mesh.rotation.y)
 
                 this.scene.add(this.mesh);
-                // this.mesh.position.y = 100
                 console.log(this.geometry.animations) // tu powinny być widoczne animacje
-
             },
         );
     }
 
     init() {
-        if (this.isLeft) this.mesh.position.z += this.offset;
+        if (this.ID == 1) this.mesh.position.z += this.offset;
         else this.mesh.position.z -= this.offset;
 
         //this.mesh.rotation.y = 90 * Math.PI / 180

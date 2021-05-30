@@ -12,6 +12,8 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import Model from "./Model"
 import marioMD2 from "./assets/mario.md2";
 import Animation from './Animation';
+import PlayerManager from './PlayerManager';
+import ConnectionManager from './ConnectionManager';
 
 export default class Main {
     constructor(container) {
@@ -24,6 +26,8 @@ export default class Main {
         this.isLoaded = null
         this.animation = null
 
+
+        this.connectionManager = new ConnectionManager('localhost', 3000);
 
         // GRID HELPER
         const gridHelper = new GridHelper(1000, 10);
@@ -39,10 +43,10 @@ export default class Main {
         // LOADING MANAGER
         this.manager = new LoadingManager();
 
-        this.player1 = new Model(this.scene, this.manager, true);
+        this.player1 = new Model(this.scene, this.manager, 1);
         this.player1.load(marioMD2);
 
-        this.player2 = new Model(this.scene, this.manager, false);
+        this.player2 = new Model(this.scene, this.manager, 2);
         this.player2.load(marioMD2);
 
         this.manager.onProgress = (item, loaded, total) => {
@@ -64,6 +68,13 @@ export default class Main {
 
         };
 
+        // PLAYER MANAGERS
+        console.log('sss')
+        console.log(this.player1.ID)
+        this.player1Manager = new PlayerManager(this.player1, this.player1Animation, this.player1.ID);
+        this.player2Manager = new PlayerManager(this.player2, this.player1Animation, this.player2.ID);
+
+
         this.light = new DirectionalLight(0xffffff, 10);
         this.light.position.set(3, 3, 50);
         this.light.intensity = 2
@@ -78,8 +89,8 @@ export default class Main {
 
         // DELTA
         const delta = this.clock.getDelta();
-        if(this.player1Animation)this.player1Animation.update(delta)
-        if(this.player2Animation)this.player2Animation.update(delta)
+        if (this.player1Animation) this.player1Animation.update(delta)
+        if (this.player2Animation) this.player2Animation.update(delta)
         this.renderer.render(this.scene, this.camera.threeCamera);
 
         if (this.player1.mesh) {
@@ -117,4 +128,6 @@ export default class Main {
 
         requestAnimationFrame(this.render.bind(this));
     }
+
+
 }
