@@ -49,8 +49,28 @@ class Socket {
         })
 
         socket.on('join_room', (roomId, cb) => {
-            this.io.of("/").adapter.rooms.get(roomId).size
-            socket.join(roomId)
+            this.roomsDb.findOne({_id: roomId}, (err, doc) => {
+                if (err !== undefined || doc != null) {
+                    cb({
+                        id: null,
+                        error: err ?? "Room is full",
+                    })
+                    return;
+                }
+                let occupancy = this.io.of("/").adapter.rooms.get(roomId).size
+                if (occupancy > 2) {
+                    cb({
+                        success: false,
+                        err: new Error("Room is full")
+                    })
+                } else {
+                    socket.join(roomId)
+                    cb({
+                        success: true,
+                        err: undefined
+                    })
+                }
+            })
         })
     }
 
