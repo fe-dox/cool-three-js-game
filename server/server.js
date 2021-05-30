@@ -1,6 +1,6 @@
 const http = require('http');
 const express = require('express')
-const {Server} = require('socket.io')
+const Socket = require('./Socket');
 const helmet = require('helmet')
 const path = require("path");
 
@@ -8,8 +8,7 @@ const app = express()
 const port = 3000
 
 const server = http.createServer(app)
-
-
+const sockets = new Socket(server)
 
 app.use(helmet())
 app.use(express.static(path.join(__dirname, 'public')))
