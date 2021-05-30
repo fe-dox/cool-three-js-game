@@ -1,12 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Threejs 5</title>
-    
+       
+    <meta charset="UTF-8">
+       
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Threejs 5</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .player {
+            color: white;
+            display: flex;
+            padding: 10px;
+            background-color: blue;
+            width: 50%;
+        }
+
+
+        .playerHp {
+            font-size: 50px;
+            font-weight: bold;
+            color: black;
+            position: absolute;
+            top: 20%;
+            transform: translate(-50%, 0);
+        }
+
+        #player1Hp {
+            left: 25%;
+        }
+
+        #player2Hp {
+            left: 75%;
+        }
+
+        .playerNick {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .playerHpIcon{
+            color: red;
+        }
+    </style>
 </head>
+
 <body>
-  <div id="root"></div>
+    <div id="menu">
+        <div id="player1" class="player">
+            <div id="player1Hp" class="playerHp">
+
+                <span class="playerHpSpan"> <i class="fas fa-heart playerHpIcon"></i></span>
+                <span id="player1Hp" class="playerHpSpan">100</span>
+            </div>
+
+            <div id="player1Bottom" class="playerBottom">
+                <span class="playerNick">Tom</span>
+            </div>
+        </div>
+        <div id="player2" class="player">
+
+            <div id="player2Hp" class="playerHp">
+                <span class="playerHpSpan"> <i class="fas fa-heart playerHpIcon"></i></span>
+                <span class="playerHpSpan">100</span>
+            </div>
+            <div id="player2Bottom" class="playerBottom">
+                <span class="playerNick">Josh</span>
+            </div>
+        </div>
+    </div>
+      <div id="root"></div>
 </body>
+
 </html>

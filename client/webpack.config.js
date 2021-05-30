@@ -35,7 +35,11 @@ module.exports = {
                         name: 'images/[hash]-[name].[ext]'
                     }
                 }]
-            }
+            },
+            {
+                test: /\.(md2)$/i,
+                type: 'asset/resource',
+             }
         ]
     }
 };
