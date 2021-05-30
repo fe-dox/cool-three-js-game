@@ -10,7 +10,7 @@ export default class Model {
         this.geometry = null
         this.ID = ID;
         this.offset = 60;
-        
+
     }
 
     load(path) {
