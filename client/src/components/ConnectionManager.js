@@ -12,7 +12,8 @@ export default class ConnectionManager {
     }
 
     onConnect() {
-        console.log(`Connected! Socket id: ${this.socket.id}`);
+        //console.log(`Connected! Socket id: ${this.socket.id}`);
+        console.log(`Connected! Socket id: ${this.socket}`);
     }
 
     onDisconnect() {

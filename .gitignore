@@ -1,3 +1,6 @@
+
+*.nedb
+
 # Logs
 logs
 *.log
