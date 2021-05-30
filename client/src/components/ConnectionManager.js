@@ -2,18 +2,34 @@ import { io } from "socket.io-client";
 
 
 export default class ConnectionManager {
-    constructor(serverUrl,PORT) {
+    constructor(serverUrl, PORT) {
         this.serverUrl = serverUrl;
         this.socket = io(`http://${this.serverUrl}:${PORT}`);
 
-        this.socket.on("connect", this.onConnect);
+        this.socket.on("connect", () => this.onConnect());
         this.socket.on("disconnect", this.onDisconnect);
         this.socket.on("connection", this.onConnection);
     }
 
-    onConnect() {
-        //console.log(`Connected! Socket id: ${this.socket.id}`);
+    async onConnect() {
         console.log(`Connected! Socket id: ${this.socket}`);
+        return this.socket;
+    }
+
+    createRoom() {
+        return new Promise((res, rej) => {
+            this.socket.emit('create_room', (data) => {
+                res(data);
+            });
+        })
+    }
+
+    joinRoom(){
+        return new Promise((res, rej) => {
+            this.socket.emit('join_room', (data) => {
+                res(data);
+            });
+        })
     }
 
     onDisconnect() {
@@ -24,7 +40,7 @@ export default class ConnectionManager {
 
     }
 
-    joinRoom(){
+    joinRoom() {
         this.socket.emit('join_room');
     }
 }
