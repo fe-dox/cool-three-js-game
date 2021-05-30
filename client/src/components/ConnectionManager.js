@@ -22,4 +22,8 @@ export default class ConnectionManager {
     onConnection() {
 
     }
+
+    joinRoom(){
+        this.socket.emit('join_room');
+    }
 }
