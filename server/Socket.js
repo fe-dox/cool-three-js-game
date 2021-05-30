@@ -62,7 +62,7 @@ class Socket {
                     })
                     return;
                 }
-                let occupancy = this.io.of("/").adapter.rooms.get(roomId).size
+                let occupancy = this.io.sockets.adapter.rooms.get(roomId) === undefined ? 0 : this.io.sockets.adapter.rooms.get(roomId).size
                 if (occupancy > 2) {
                     cb({
                         success: false,
