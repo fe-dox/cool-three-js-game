@@ -55,7 +55,7 @@ class Socket {
 
         socket.on('join_room', (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
-                if (!!err || doc != null) {
+                if (!!err || doc == null) {
                     cb({
                         success: false,
                         error: err
