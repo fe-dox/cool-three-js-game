@@ -12,7 +12,123 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <style>
+        :root {
+            --background: blue;
+        }
 
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+                Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #main {
+            position: absolute;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 20;
+            background: #222;
+            color: white;
+            top: 0;
+        }
+
+        .panel {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .panel>* {
+            margin: 10px;
+            font-size: 30px;
+        }
+
+        .btn,
+        input {
+            background: white;
+            border: none;
+            color: #222;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 2px 5px;
+        }
+
+        #menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .player {
+            color: white;
+            display: flex;
+            background-color: blue;
+            width: 50%;
+            display: none;
+        }
+
+        .playerHp {
+            font-size: 50px;
+            font-weight: bold;
+            color: black;
+            position: absolute;
+            top: 20%;
+            transform: translate(-50%, 0);
+        }
+
+        #player1Hp {
+            left: 25%;
+        }
+
+        #player2Hp {
+            left: 75%;
+        }
+
+        .playerNick {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .playerHpIcon {
+            color: red;
+        }
+
+        #border {
+            position: absolute;
+            top: 0;
+            width: 1vw;
+            height: 100vh;
+            left: 49.5vw;
+            background: var(--background);
+        }
+
+        #roomID {
+            position: absolute;
+            top: 5vh;
+            left: 50vw;
+            transform: translate(-50%, 0%);
+            color: black;
+            font-weight: bold;
+            font-size: 30px;
+            z-index: 10;
+            padding: 10px;
+            border: 2px solid black;
+            background: white;
+        }
     </style>
 </head>
 
@@ -22,13 +138,13 @@
 
     <div id="main">
         <div class="panel">
-            <span>MAM KOD: </span> 
+            <span>MAM KOD: </span>
             <input type="text" id="roomIDInput" minlength="8" maxlength="8">
             <button class="btn" id="joinRoomWithIDBtn">DOŁĄCZ</button>
         </div>
         <div class="panel">
-            <span>NIE MAM KODU</span> 
-            <button class="btn"  id="joinRoomBtn">DOŁĄCZ</button>
+            <span>NIE MAM KODU</span>
+            <button class="btn" id="joinRoomBtn">DOŁĄCZ</button>
         </div>
     </div>
 

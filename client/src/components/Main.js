@@ -27,7 +27,7 @@ export default class Main {
         this.animation = null
 
 
-        this.connectionManager = new ConnectionManager('localhost', 3000);
+        //this.connectionManager = new ConnectionManager('localhost', 3000);
 
         // GRID HELPER
         const gridHelper = new GridHelper(1000, 10);

@@ -5,6 +5,7 @@ module.exports = {
     output: {
         filename: 'bundle.js'
     },
+    devtool: 'cheap-module-source-map',
     mode: 'development',// none, development, production,
     devServer: {
         port: 8080
