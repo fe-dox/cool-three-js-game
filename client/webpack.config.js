@@ -5,6 +5,7 @@ module.exports = {
     output: {
         filename: 'bundle.js'
     },
+    watch: true,
     devtool: 'cheap-module-source-map',
     mode: 'development',// none, development, production,
     devServer: {

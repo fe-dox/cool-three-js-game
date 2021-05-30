@@ -10,19 +10,20 @@ function init() {
 }
 
 class Entry {
-    constructor() {
+     constructor() {
         this.roomIDInput = document.getElementById('roomIDInput');
         this.joinRoomWithIDBtn = document.getElementById('joinRoomWithIDBtn');
         this.joinRoomBtn = document.getElementById('joinRoomBtn');
         this.connectionManager = new ConnectionManager('localhost', 3000);
-        this.joinRoomBtn.onclick = () => {
+        this.joinRoomBtn.onclick = async () => {
             console.log('click')
             // CREATE ROOM
-            this.connectionManager.socket.emit('create_room',(data) => {
-                console.log(data)
-            });
-
+            let roomID = await this.connectionManager.createRoom();
+            roomID = roomID.id;
             //JOIN ROOM
+
+            const joinRoomData = this.connectionManager.joinRoom();
+            console.log(joinRoomData)
         }
 
         this.joinRoomWithIDBtn.onclick = () => {
@@ -42,6 +43,8 @@ class Entry {
         }
 
     }
+
+
 
     hideEntry() {
         document.getElementById('main').style.display = "none";
