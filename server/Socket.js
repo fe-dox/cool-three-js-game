@@ -57,7 +57,7 @@ class Socket {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
                 if (!!err || doc != null) {
                     cb({
-                        id: null,
+                        success: false,
                         error: err
                     })
                     return;
