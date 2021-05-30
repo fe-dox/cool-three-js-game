@@ -24,9 +24,9 @@ export default class ConnectionManager {
         })
     }
 
-    joinRoom(){
+    joinRoom(roomID){
         return new Promise((res, rej) => {
-            this.socket.emit('join_room', (data) => {
+            this.socket.emit('join_room',roomID, (data) => {
                 res(data);
             });
         })

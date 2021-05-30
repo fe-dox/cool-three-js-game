@@ -22,7 +22,7 @@ class Entry {
             roomID = roomID.id;
             //JOIN ROOM
 
-            const joinRoomData = this.connectionManager.joinRoom();
+            const joinRoomData = this.connectionManager.joinRoom(roomID);
             console.log(joinRoomData)
         }
 
