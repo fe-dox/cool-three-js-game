@@ -8,6 +8,7 @@ class Socket {
 
     constructor(server) {
         this.roomsDb = Database.GetDatabase("rooms")
+        console.log(this.roomsDb)
         this.io = new Server(server)
         this.io.on('connection', this.onConnect)
     }
@@ -78,6 +79,7 @@ class Socket {
         socket.on('emote', (emoteId) => {
             socket.emit('emote', emoteId)
         })
+
 
     }
 

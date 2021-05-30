@@ -13,7 +13,6 @@ const sockets = new Socket(server)
 app.use(helmet())
 if (process.env.ENVIRONMENT === "production") {
     app.use(express.static(path.join(__dirname, 'public')))
-
 } else {
     app.use(express.static(path.join(__dirname, '../client/dist')))
 }
