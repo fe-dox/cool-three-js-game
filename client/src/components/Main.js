@@ -67,8 +67,11 @@ export default class Main {
             this.playerAnimation = new Animation(this.player.mesh)
             this.enemyAnimation = new Animation(this.enemy.mesh)
 
+            this.player.animation = this.playerAnimation;
+            this.enemy.animation = this.enemyAnimation;
+
             // GUI
-            this.gui = new GUI(this.roomID, this.player,this.playerAnimation);
+            this.gui = new GUI(this.roomID, this.player, this.connectionManager);
 
             this.playerAnimation.playAnim("crstand")
             this.enemyAnimation.playAnim("crstand")

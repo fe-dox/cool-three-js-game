@@ -38,11 +38,11 @@ export default class Model {
  
         if (this.isPlayerLeft) {
             console.log('LEFTTTTT')
-            this.mesh.position.z -= this.offset;
+            this.mesh.position.z += this.offset;
         }
         else {
             console.log('RIGHTTT')
-            this.mesh.position.z += this.offset;
+            this.mesh.position.z -= this.offset;
         }
 
         //this.mesh.rotation.y = 90 * Math.PI / 180
