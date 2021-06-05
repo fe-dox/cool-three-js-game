@@ -39,7 +39,7 @@ class Socket {
 
         socket.on('check_room', (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
-                if (!!err|| doc === null) {
+                if (!!err || doc === null) {
                     cb({
                         roomExists: false,
                         err: err
@@ -63,6 +63,7 @@ class Socket {
                     return;
                 }
                 let occupancy = this.io.sockets.adapter.rooms.get(roomId) === undefined ? 0 : this.io.sockets.adapter.rooms.get(roomId).size
+                console.log("occupancy", occupancy)
                 if (occupancy > 2) {
                     cb({
                         success: false,
