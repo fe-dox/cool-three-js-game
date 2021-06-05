@@ -5,7 +5,6 @@ const QuizApi = require("./QuizApi");
 
 class Socket {
     io;
-    logger;
     roomsDb;
     rooms = {}
 
