@@ -11,8 +11,11 @@ export default class ConnectionManager {
 
         this.socket.on("connect", () => this.onConnect());
         this.socket.on("disconnect", () => this.onDisconnect());
-        this.socket.on("connection",() =>  this.onConnection());
+        this.socket.on("connection", () => this.onConnection());
         this.socket.on("next_question", () => this.nextQuestion());
+        this.socket.on("emote", (emoteName) =>{
+            console.log(emoteName)
+        });
     }
 
     async onConnect() {
@@ -50,14 +53,17 @@ export default class ConnectionManager {
 
     emote(emoteName) {
         return new Promise((res, rej) => {
-            this.socket.emit('emote',emoteName, (data) => {
+            this.socket.emit('emote', emoteName, (data) => {
                 res(data);
             });
         })
     }
 
+    playEnemyEmote() {
 
-    nextQuestion(){
-      
+    }
+
+    nextQuestion() {
+
     }
 }
