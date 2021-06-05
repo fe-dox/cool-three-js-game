@@ -15,10 +15,8 @@ class Socket {
     }
 
     onConnect(socket) {
-        console.log("User connected to socket")
         socket.on('create_room', (cb) => {
             const newId = Utils.NewId();
-            console.log("Creating room", newId)
             this.roomsDb.findOne({_id: newId}, (err, doc) => {
                 if (!!err || doc != null) {
                     cb({
@@ -63,7 +61,6 @@ class Socket {
                     return;
                 }
                 let occupancy = this.io.sockets.adapter.rooms.get(roomId) === undefined ? 0 : this.io.sockets.adapter.rooms.get(roomId).size
-                console.log("occupancy", occupancy)
                 if (occupancy >= 2) {
                     cb({
                         success: false,
@@ -71,10 +68,11 @@ class Socket {
                     })
                 } else {
                     socket.join(roomId)
-                    if (occupancy === 2){
-                        this.io.to(roomId).emit("start_game")
+                    if (occupancy === 2) {
+                        this.io.to(roomId).emit("next_question")
                     }
                     cb({
+                        numberOfPlayers: occupancy + 1,
                         success: true,
                         err: undefined
                     })
@@ -86,9 +84,9 @@ class Socket {
             socket.emit('emote', emoteId)
         })
 
-
-
-
+        socket.on('disconnect', () => {
+            socket.emit('player_disconnected')
+        })
     }
 
 
