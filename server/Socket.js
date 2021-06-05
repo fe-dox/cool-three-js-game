@@ -1,11 +1,13 @@
 const {Server} = require('socket.io')
 const Database = require('./Database')
 const Utils = require('./Utils')
+const QuizApi = require("./QuizApi");
 
 class Socket {
     io;
     logger;
     roomsDb;
+    roomsMap = new Map();
 
     constructor(server) {
         this.roomsDb = Database.GetDatabase("rooms")
@@ -51,7 +53,7 @@ class Socket {
             })
         })
 
-        socket.on('join_room', (roomId, cb) => {
+        socket.on('join_room', async (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
                 if (!!err || doc == null) {
                     cb({
@@ -67,26 +69,34 @@ class Socket {
                         err: new Error("Room is full")
                     })
                 } else {
+                    socket.gameRoom = roomId;
                     socket.join(roomId)
-                    if (occupancy === 2) {
-                        this.io.to(roomId).emit("next_question")
-                    }
                     cb({
                         numberOfPlayers: occupancy + 1,
                         success: true,
                         err: undefined
                     })
+                    if (occupancy === 2) {
+                        this.NextQuestion(socket)
+                    }
                 }
             })
         })
 
         socket.on('emote', (emoteId) => {
-            socket.emit('emote', emoteId)
+            socket.to(socket.gameRoom).emit('emote', emoteId)
         })
 
         socket.on('disconnect', () => {
-            socket.emit('player_disconnected')
+            socket.to(socket.gameRoom).emit('player_disconnected')
         })
+    }
+
+    async NextQuestion(socket) {
+        const question = await QuizApi.GetRandomQuestion();
+        question.StampTime();
+        socket.lastQuestion = question;
+        this.io.to(socket.gameRoom).emit("next_question", socket.id, question)
     }
 
 
