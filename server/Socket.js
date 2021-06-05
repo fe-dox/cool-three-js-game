@@ -6,6 +6,7 @@ class Socket {
     io;
     logger;
     roomsDb;
+    roomsMap = new Map();
 
     constructor(server) {
         this.roomsDb = Database.GetDatabase("rooms")
@@ -67,9 +68,10 @@ class Socket {
                         err: new Error("Room is full")
                     })
                 } else {
+                    socket.gameRoom = roomId;
                     socket.join(roomId)
                     if (occupancy === 2) {
-                        this.io.to(roomId).emit("next_question")
+                        this.NextQuestion(socket)
                     }
                     cb({
                         numberOfPlayers: occupancy + 1,
@@ -81,12 +83,17 @@ class Socket {
         })
 
         socket.on('emote', (emoteId) => {
-            socket.emit('emote', emoteId)
+            socket.to(socket.gameRoom).emit('emote', emoteId)
         })
 
         socket.on('disconnect', () => {
-            socket.emit('player_disconnected')
+            socket.to(socket.gameRoom).emit('player_disconnected')
         })
+    }
+
+    NextQuestion(socket) {
+        this.io.to(socket.gameRoom).emit("next_question")
+
     }
 
 
