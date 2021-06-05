@@ -64,7 +64,7 @@ class Socket {
                 }
                 let occupancy = this.io.sockets.adapter.rooms.get(roomId) === undefined ? 0 : this.io.sockets.adapter.rooms.get(roomId).size
                 console.log("occupancy", occupancy)
-                if (occupancy > 2) {
+                if (occupancy >= 2) {
                     cb({
                         success: false,
                         err: new Error("Room is full")
