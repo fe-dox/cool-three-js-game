@@ -71,6 +71,9 @@ class Socket {
                     })
                 } else {
                     socket.join(roomId)
+                    if (occupancy === 2){
+                        this.io.to(roomId).emit("start_game")
+                    }
                     cb({
                         success: true,
                         err: undefined
@@ -82,6 +85,8 @@ class Socket {
         socket.on('emote', (emoteId) => {
             socket.emit('emote', emoteId)
         })
+
+
 
 
     }
