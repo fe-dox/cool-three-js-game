@@ -29,7 +29,7 @@ class Socket {
                 }
 
                 this.roomsDb.insert({_id: newId})
-                this.rooms[id] = {}
+                this.rooms[newId] = {}
                 cb({
                     id: newId,
                     error: undefined,
