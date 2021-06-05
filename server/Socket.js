@@ -7,7 +7,7 @@ class Socket {
     io;
     logger;
     roomsDb;
-    roomsMap = new Map();
+    rooms = {}
 
     constructor(server) {
         this.roomsDb = Database.GetDatabase("rooms")
@@ -30,6 +30,7 @@ class Socket {
                 }
 
                 this.roomsDb.insert({_id: newId})
+                this.rooms[id] = {}
                 cb({
                     id: newId,
                     error: undefined,
@@ -76,11 +77,19 @@ class Socket {
                         success: true,
                         err: undefined
                     })
-                    if (occupancy === 2) {
-                        this.NextQuestion(socket)
+                    if (occupancy === 1) {
+                        this.rooms[socket.gameRoom].currentPlayer = socket;
+                        this.NextQuestion(roomId);
+                    }
+                    if (occupancy === 0) {
+                        this.rooms[roomId].nextPlayer = socket;
                     }
                 }
             })
+        })
+
+        socket.on('answer', (answer) => {
+
         })
 
         socket.on('emote', (emoteId) => {
@@ -92,7 +101,10 @@ class Socket {
         })
     }
 
-    async NextQuestion(socket) {
+    async NextQuestion(roomId) {
+        let socket = this.rooms[roomId].nextPlayer;
+        this.rooms[roomId].nextPlayer = this.rooms[roomId].currentPlayer;
+        this.rooms[roomId].currentPlayer = socket;
         const question = await QuizApi.GetRandomQuestion();
         question.StampTime();
         socket.lastQuestion = question;

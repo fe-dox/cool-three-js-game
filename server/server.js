@@ -10,7 +10,7 @@ const port = 3000
 const server = http.createServer(app)
 const sockets = new Socket(server)
 
-// app.use(helmet())
+app.use(helmet())
 if (process.env.ENVIRONMENT === "production") {
     app.use(express.static(path.join(__dirname, 'public')))
 } else {
