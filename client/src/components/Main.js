@@ -12,22 +12,26 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import Model from "./Model"
 import marioMD2 from "./assets/mario.md2";
 import Animation from './Animation';
+import GUI from './GUI';
 import PlayerManager from './PlayerManager';
 import ConnectionManager from './ConnectionManager';
 
 export default class Main {
-    constructor(container) {
+    constructor(container, connectionManager,roomID) {
         this.container = container;
         this.scene = new Scene();
         this.renderer = new Renderer(this.scene, container);
         this.camera = new Camera(this.renderer.threeRenderer);
         this.camVect = new Vector3(-200, 0, 0);
 
+        // CONNECTION
+        this.connectionManager = connectionManager;
+        this.roomID = roomID;
         this.isLoaded = null
         this.animation = null
 
-
-        //this.connectionManager = new ConnectionManager('localhost', 3000);
+        // GUI
+        this.gui = new GUI(this.roomID);
 
         // GRID HELPER
         const gridHelper = new GridHelper(1000, 10);

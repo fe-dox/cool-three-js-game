@@ -4,13 +4,14 @@ import Main from './components/Main';
 
 console.log('START')
 
-function init() {
+function init(hide, connectionManager, roomID) {
     const container = document.getElementById('root');
-    new Main(container);
+    new Main(container, connectionManager, roomID);
+    hide();
 }
 
 class Entry {
-     constructor() {
+    constructor() {
         this.roomIDInput = document.getElementById('roomIDInput');
         this.joinRoomWithIDBtn = document.getElementById('joinRoomWithIDBtn');
         this.joinRoomBtn = document.getElementById('joinRoomBtn');
@@ -20,22 +21,30 @@ class Entry {
             // CREATE ROOM
             let roomID = await this.connectionManager.createRoom();
             roomID = roomID.id;
+
             //JOIN ROOM
 
-            const joinRoomData = this.connectionManager.joinRoom(roomID);
-            console.log(joinRoomData)
+            const joinRoomData = await this.connectionManager.joinRoom(roomID);
+
+            if (joinRoomData.success) init(this.hideEntry, this.connectionManager, roomID);
         }
 
         this.joinRoomWithIDBtn.onclick = () => {
-            const ID = roomIDInput.value;
-            if (ID.length === 8) {
+            const roomID = roomIDInput.value;
+            if (roomID.length === 8) {
                 // CHECK IF ROOM ID IS VALID
-                const isIDValid = true; // mocked id validation
-                if (isIDValid) {
-                    init();
-                    this.hideEntry();
-                }
-                else alert('ID is not valid!');
+                //const isIDValid = true; // mocked id validation
+                this.connectionManager.joinRoom(roomID)
+                    .then(data => {
+                        console.log(data)
+                        if (data.success) {
+                            init(this.hideEntry, this.connectionManager, roomID);
+                        } else {
+                            alert('ID is not valid!');
+                        }
+                    })
+
+
             }
             else {
                 alert("ID doesn't match requirements!");
