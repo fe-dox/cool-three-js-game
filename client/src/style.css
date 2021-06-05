@@ -94,11 +94,8 @@ input {
   left: 49.5vw;
   background: var(--background);
 }
-#roomID {
-  position: absolute;
-  top: 5vh;
-  left: 50vw;
-  transform: translate(-50%, 0%);
+#roomID,
+.emot {
   color: black;
   font-weight: bold;
   font-size: 30px;
@@ -106,4 +103,22 @@ input {
   padding: 10px;
   border: 2px solid black;
   background: white;
+}
+#roomID {
+  position: absolute;
+  top: 5vh;
+  left: 50vw;
+  transform: translate(-50%, 0%);
+}
+.emots {
+  position: absolute;
+  top: 5vh;
+  transform: translate(-50%, 0%);
+}
+
+.emots-left {
+  left: 25vw;
+}
+.emots-right {
+  left: 75vw;
 }

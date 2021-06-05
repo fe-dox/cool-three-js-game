@@ -17,7 +17,10 @@ import PlayerManager from './PlayerManager';
 import ConnectionManager from './ConnectionManager';
 
 export default class Main {
-    constructor(container, connectionManager,roomID) {
+    constructor(container, connectionManager, roomID, numberOfPlayers) {
+        console.log('NUM', numberOfPlayers)
+        this.isPlayerLeft = numberOfPlayers == 1;
+
         this.container = container;
         this.scene = new Scene();
         this.renderer = new Renderer(this.scene, container);
@@ -30,8 +33,7 @@ export default class Main {
         this.isLoaded = null
         this.animation = null
 
-        // GUI
-        this.gui = new GUI(this.roomID);
+
 
         // GRID HELPER
         const gridHelper = new GridHelper(1000, 10);
@@ -47,11 +49,13 @@ export default class Main {
         // LOADING MANAGER
         this.manager = new LoadingManager();
 
-        this.player1 = new Model(this.scene, this.manager, 1);
-        this.player1.load(marioMD2);
+        this.player = new Model(this.scene, this.manager, this.isPlayerLeft);
+        this.player.load(marioMD2);
 
-        this.player2 = new Model(this.scene, this.manager, 2);
-        this.player2.load(marioMD2);
+        this.enemy = new Model(this.scene, this.manager, !this.isPlayerLeft);
+        this.enemy.load(marioMD2);
+
+
 
         this.manager.onProgress = (item, loaded, total) => {
             console.log(`progress ${item}: ${loaded} ${total}`);
@@ -60,23 +64,26 @@ export default class Main {
         this.manager.onLoad = () => {
             this.isLoaded = true;
 
-            this.player1Animation = new Animation(this.player1.mesh)
-            this.player2Animation = new Animation(this.player2.mesh)
+            this.playerAnimation = new Animation(this.player.mesh)
+            this.enemyAnimation = new Animation(this.enemy.mesh)
 
-            this.player1Animation.playAnim("crstand")
-            this.player2Animation.playAnim("crstand")
-            this.player1.init()
-            this.player2.init()
+            // GUI
+            this.gui = new GUI(this.roomID, this.player,this.playerAnimation);
 
-            // this.keyboard = new Keyboard(window, this.animation, this.player1.mesh);
+            this.playerAnimation.playAnim("crstand")
+            this.enemyAnimation.playAnim("crstand")
+            this.player.init()
+            this.enemy.init()
+
+            // this.keyboard = new Keyboard(window, this.animation, this.player.mesh);
 
         };
 
         // PLAYER MANAGERS
         console.log('sss')
-        console.log(this.player1.ID)
-        this.player1Manager = new PlayerManager(this.player1, this.player1Animation, this.player1.ID);
-        this.player2Manager = new PlayerManager(this.player2, this.player1Animation, this.player2.ID);
+        console.log(this.player.ID)
+        this.playerManager = new PlayerManager(this.player, this.playerAnimation, this.player.ID);
+        this.enemyManager = new PlayerManager(this.enemy, this.playerAnimation, this.enemy.ID);
 
 
         this.light = new DirectionalLight(0xffffff, 10);
@@ -93,27 +100,27 @@ export default class Main {
 
         // DELTA
         const delta = this.clock.getDelta();
-        if (this.player1Animation) this.player1Animation.update(delta)
-        if (this.player2Animation) this.player2Animation.update(delta)
+        if (this.playerAnimation) this.playerAnimation.update(delta)
+        if (this.enemyAnimation) this.enemyAnimation.update(delta)
         this.renderer.render(this.scene, this.camera.threeCamera);
 
-        if (this.player1.mesh) {
+        if (this.player.mesh) {
 
             // if (Config.rotateLeft) {
-            //     this.player1.mesh.rotation.y += 0.05
+            //     this.player.mesh.rotation.y += 0.05
             // }
 
             // if (Config.rotateRight) {
-            //     this.player1.mesh.rotation.y -= 0.05
+            //     this.player.mesh.rotation.y -= 0.05
             //     console.log('rotate')
             // }
 
             // if (Config.moveForward) {
             //     //if (this.animation) this.animation.update(delta)
-            //    // this.player1.mesh.translateX(3)
+            //    // this.player.mesh.translateX(3)
             // }
 
-            // const camPos = this.camVect.applyMatrix4(this.player1.mesh.matrixWorld);
+            // const camPos = this.camVect.applyMatrix4(this.player.mesh.matrixWorld);
             // this.camera.threeCamera.position.x = camPos.x
             // this.camera.threeCamera.position.y = camPos.y
             // this.camera.threeCamera.position.z = camPos.z
@@ -122,8 +129,8 @@ export default class Main {
             this.camera.threeCamera.position.y = 10
             this.camera.threeCamera.position.z = 0
 
-            //const modelVector = new Vector3(this.player1.mesh.position.x, this.player1.mesh.position.y, this.player1.mesh.position.z)
-            // this.camera.threeCamera.lookAt(this.player1.mesh.position)
+            //const modelVector = new Vector3(this.player.mesh.position.x, this.player.mesh.position.y, this.player.mesh.position.z)
+            // this.camera.threeCamera.lookAt(this.player.mesh.position)
             this.camera.threeCamera.lookAt(new Vector3(0, 0, 0))
         }
 

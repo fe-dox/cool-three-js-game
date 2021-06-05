@@ -3,12 +3,16 @@ import { io } from "socket.io-client";
 
 export default class ConnectionManager {
     constructor(serverUrl, PORT) {
+        this.player = undefined;
+        this.enemy = undefined;
+
         this.serverUrl = serverUrl;
         this.socket = io(`http://${this.serverUrl}:${PORT}`);
 
         this.socket.on("connect", () => this.onConnect());
-        this.socket.on("disconnect", this.onDisconnect);
-        this.socket.on("connection", this.onConnection);
+        this.socket.on("disconnect", () => this.onDisconnect());
+        this.socket.on("connection",() =>  this.onConnection());
+        this.socket.on("next_question", () => this.nextQuestion());
     }
 
     async onConnect() {
@@ -44,7 +48,16 @@ export default class ConnectionManager {
         console.log('Disconnected!');
     }
 
-    onConnection() {
+    emote(emoteName) {
+        return new Promise((res, rej) => {
+            this.socket.emit('emote',emoteName, (data) => {
+                res(data);
+            });
+        })
+    }
 
+
+    nextQuestion(){
+      
     }
 }
