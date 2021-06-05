@@ -2,11 +2,14 @@ import './style.css';
 import ConnectionManager from './components/ConnectionManager';
 import Main from './components/Main';
 
-console.log('START')
 
-function init(hide, connectionManager, roomID) {
+function hide() {
+    document.getElementById('main').style.display = "none";
+}
+
+function init(connectionManager, roomID, numberOfPlayers) {
     const container = document.getElementById('root');
-    new Main(container, connectionManager, roomID);
+    new Main(container, connectionManager, roomID, numberOfPlayers);
     hide();
 }
 
@@ -16,17 +19,26 @@ class Entry {
         this.joinRoomWithIDBtn = document.getElementById('joinRoomWithIDBtn');
         this.joinRoomBtn = document.getElementById('joinRoomBtn');
         this.connectionManager = new ConnectionManager('localhost', 3000);
+        
         this.joinRoomBtn.onclick = async () => {
             console.log('click')
             // CREATE ROOM
             let roomID = await this.connectionManager.createRoom();
             roomID = roomID.id;
-
+            console.log('SSS',roomID)
             //JOIN ROOM
 
-            const joinRoomData = await this.connectionManager.joinRoom(roomID);
+            await this.connectionManager.joinRoom(roomID)
+                .then(data => {
+                    if (data.success) {
+                        const numberOfPlayers = data.numberOfPlayers;
+                        console.log('NUM OF PLAYERS', numberOfPlayers)
+                        init(this.connectionManager, roomID, numberOfPlayers);
+                    } else {
+                        alert('ID is not valid!');
+                    }
+                });
 
-            if (joinRoomData.success) init(this.hideEntry, this.connectionManager, roomID);
         }
 
         this.joinRoomWithIDBtn.onclick = () => {
@@ -36,9 +48,10 @@ class Entry {
                 //const isIDValid = true; // mocked id validation
                 this.connectionManager.joinRoom(roomID)
                     .then(data => {
-                        console.log(data)
                         if (data.success) {
-                            init(this.hideEntry, this.connectionManager, roomID);
+                            const numberOfPlayers = data.numberOfPlayers;
+                            console.log('NUM OF PLAYERS', numberOfPlayers)
+                            init(this.connectionManager, roomID, numberOfPlayers);
                         } else {
                             alert('ID is not valid!');
                         }
@@ -55,12 +68,7 @@ class Entry {
 
 
 
-    hideEntry() {
-        document.getElementById('main').style.display = "none";
-    }
+
 }
 
 const entry = new Entry();
-
-
-init();

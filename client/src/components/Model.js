@@ -3,14 +3,13 @@ import { Mesh, TextureLoader, MeshPhongMaterial } from "three"
 import modelTex from "./assets/mario.jpg"
 
 export default class Model {
-    constructor(scene, manager, ID) {
+    constructor(scene, manager, isPlayerLeft) {
         this.scene = scene;
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
-        this.ID = ID;
+        this.isPlayerLeft = isPlayerLeft;
         this.offset = 60;
-
     }
 
     load(path) {
@@ -36,8 +35,15 @@ export default class Model {
     }
 
     init() {
-        if (this.ID == 1) this.mesh.position.z += this.offset;
-        else this.mesh.position.z -= this.offset;
+ 
+        if (this.isPlayerLeft) {
+            console.log('LEFTTTTT')
+            this.mesh.position.z -= this.offset;
+        }
+        else {
+            console.log('RIGHTTT')
+            this.mesh.position.z += this.offset;
+        }
 
         //this.mesh.rotation.y = 90 * Math.PI / 180
         // this.mesh.rotation.set(0,-0.01,0)
