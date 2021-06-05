@@ -1,6 +1,7 @@
 const {Server} = require('socket.io')
 const Database = require('./Database')
 const Utils = require('./Utils')
+const QuizApi = require("./QuizApi");
 
 class Socket {
     io;
@@ -52,7 +53,7 @@ class Socket {
             })
         })
 
-        socket.on('join_room', (roomId, cb) => {
+        socket.on('join_room', async (roomId, cb) => {
             this.roomsDb.findOne({_id: roomId}, (err, doc) => {
                 if (!!err || doc == null) {
                     cb({
@@ -70,14 +71,14 @@ class Socket {
                 } else {
                     socket.gameRoom = roomId;
                     socket.join(roomId)
-                    if (occupancy === 2) {
-                        this.NextQuestion(socket)
-                    }
                     cb({
                         numberOfPlayers: occupancy + 1,
                         success: true,
                         err: undefined
                     })
+                    if (occupancy === 2) {
+                        this.NextQuestion(socket)
+                    }
                 }
             })
         })
@@ -91,9 +92,11 @@ class Socket {
         })
     }
 
-    NextQuestion(socket) {
-        this.io.to(socket.gameRoom).emit("next_question")
-
+    async NextQuestion(socket) {
+        const question = await QuizApi.GetRandomQuestion();
+        question.StampTime();
+        socket.lastQuestion = question;
+        this.io.to(socket.gameRoom).emit("next_question", socket.id, question)
     }
 
 
