@@ -20,7 +20,19 @@ class QuizApiClient {
             }
             i++
         }
-        return new Question(result.question, answers, correctAnswer, result.category)
+        return new Question(result.question, answers, correctAnswer, result.category, QuizApiClient.GetPoints(result.difficulty))
+    }
+
+    static GetPoints(difficulty) {
+        if (difficulty === "Easy") {
+            return 20;
+        }
+        if (difficulty === "Medium") {
+            return 40;
+        }
+        if (difficulty === "Hard") {
+            return 60;
+        }
     }
 
 }
