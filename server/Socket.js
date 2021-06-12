@@ -98,7 +98,7 @@ class Socket {
             if (answer === room.lastQuestion.correctAnswer) {
                 let pts = room.lastQuestion.CalculateResult(now);
                 socket.points += pts;
-                this.io.to(socket.gameRoom).emit('set_score', socket.id, socket.score);
+                this.io.to(socket.gameRoom).emit('set_score', socket.id, socket.points);
             } else {
                 socket.lives -= 1;
                 if (socket.lives <= 0) {
