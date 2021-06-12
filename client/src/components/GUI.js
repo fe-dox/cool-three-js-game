@@ -93,11 +93,13 @@ export default class GUI {
         //document.querySelector('.player-panel').append(questionDiv);
     }
 
-    decrementLives(decrementPlayerLives,lives){
-        if(decrementPlayerLives){
-            // DECREMENT MY LIVES
+    setLives(isPlayerLives,lives){
+        if(isPlayerLives){
+            // DECREMENT PLAYER LIVES
+            this.playerLivesSpan.textContent = lives;
         } else {
             // DECREMENT ENEMY LIVES
+            this.enemyLivesSpan.textContent = lives;
         }
     }
 }
