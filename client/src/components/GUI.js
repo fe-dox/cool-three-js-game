@@ -15,14 +15,13 @@ export default class GUI {
         this.panel = document.createElement('div');
         this.panel.classList.add('player-panel');
 
-
         this.playerLivesSpan = document.createElement('span');
-        this.playerLivesSpan.textContent = "3";
+        this.playerLivesSpan.innerHTML  = "<i class='fas fa-heart'></i> 3"
         this.playerLivesSpan.classList.add('livesSpan');
         this.playerLivesSpan.id = "playerLivesSpan"
 
         this.enemyLivesSpan = document.createElement('span');
-        this.enemyLivesSpan.textContent = "3";
+        this.enemyLivesSpan.innerHTML  = "<i class='fas fa-heart'></i> 3"
         this.enemyLivesSpan.classList.add('livesSpan');
         this.enemyLivesSpan.id = "enemyLivesSpan"
 
@@ -32,9 +31,15 @@ export default class GUI {
 
         this.panel.id = "playerPanel"
         this.panel.classList.add('player-panel-left');
-        this.emotsDiv.classList.add('emots-left')
-        // if (this.player.isPlayerLeft) this.panel.classList.add('player-panel-left');
-        // else this.panel.classList.add('player-panel-right');
+        // this.emotsDiv.classList.add('emots-left')
+        // if (this.player.isPlayerLeft) {
+        //     this.playerLivesSpan.style.left = "25vw"
+        //     this.enemyLivesSpan.style.left = "75vw"
+        // }
+        // else {
+        //     this.playerLivesSpan.style.left = "75vw"
+        //     this.enemyLivesSpan.style.left = "25vw"
+        // }
 
         // if (this.player.isPlayerLeft) this.emotsDiv.classList.add('emots-left')
         // else this.emotsDiv.classList.add('emots-right')
@@ -45,6 +50,7 @@ export default class GUI {
             const emotSpan = document.createElement('span');
             emotSpan.textContent = emotName;
             emotSpan.classList.add('emot');
+            emotSpan.classList.add('normal-btn');
             emotSpan.onclick = () => {
                 this.player.animation.playAnim(emotName);
                 this.connectionManager.emote(emotName);
@@ -63,6 +69,7 @@ export default class GUI {
         questionDiv.classList.add('questionDiv')
         const questionSpan = document.createElement('span');
         questionSpan.textContent = question.question;
+        questionSpan.classList.add('questionSpan');
         questionDiv.append(questionSpan);
         question.answers.forEach((answer, index) => {
             if (answer) {
@@ -93,13 +100,17 @@ export default class GUI {
         //document.querySelector('.player-panel').append(questionDiv);
     }
 
-    setLives(isPlayerLives,lives){
-        if(isPlayerLives){
+    setLives(isPlayerLives, lives) {
+        if (isPlayerLives) {
             // DECREMENT PLAYER LIVES
-            this.playerLivesSpan.textContent = lives;
+            this.playerLivesSpan.innerHTML = "<i class='fas fa-heart'></i>" + " " + lives;
         } else {
             // DECREMENT ENEMY LIVES
-            this.enemyLivesSpan.textContent = lives;
+            this.enemyLivesSpan.innerHTML = "<i class='fas fa-heart'></i>" + " " + lives;
         }
+    }
+
+    setEnemyNick(nick) {
+        this.enemyNickSpan.textContent = nick;
     }
 }

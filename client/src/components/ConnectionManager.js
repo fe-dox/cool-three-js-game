@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-
+import Alert from './Alert';
 
 export default class ConnectionManager {
     constructor(serverUrl, PORT, enemy) {
@@ -18,12 +18,24 @@ export default class ConnectionManager {
         this.socket.on("emote", emoteName => this.playEnemyEmote(emoteName));
 
         this.socket.on("lives", (socketID, lives) => {
-           console.log('lives event',socketID,this.socket.id)
+            console.log('lives event', socketID, this.socket.id, lives)
             this.gui.setLives(socketID === this.socket.id, lives)
         });
 
         this.socket.on("set_score", (socketID, score) => {
-           // console.log('set_score', socketID, score)
+            // console.log('set_score', socketID, score)
+        });
+
+        // this.socket.on("nick", nick => {
+        //     console.log('SET ENEMEY NICK',nick)
+        //     this.gui.setEnemyNick(nick);
+        //  });
+        this.socket.on("end_game", loserSoskcetID => {
+            if(this.socket.id === loserSoskcetID){
+                Alert.showAlert('YOU LOST!')
+            } else{
+                Alert.showAlert('YOU WON!')
+            }
         });
     }
 

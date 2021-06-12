@@ -2,6 +2,7 @@ import './style.css';
 import ConnectionManager from './components/ConnectionManager';
 import Main from './components/Main';
 
+document.body.onload = () => document.getElementById('loading').style.display = "none";
 
 function hide() {
     document.getElementById('main').style.display = "none";

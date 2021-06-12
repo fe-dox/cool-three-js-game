@@ -6,7 +6,7 @@ export default class Renderer {
         this.scene = scene;
         // this.scene.background = new Color( 0xffffff );
         this.container = container;
-        this.threeRenderer = new WebGLRenderer({ antialias: true });
+        this.threeRenderer = new WebGLRenderer({ antialias: true,alpha:true });
         this.threeRenderer.setClearColor(0xffffff,0);
         this.container.appendChild(this.threeRenderer.domElement);
         this.updateSize();

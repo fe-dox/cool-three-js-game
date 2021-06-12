@@ -16,10 +16,9 @@ import Animation from './Animation';
 import GUI from './GUI';
 import PlayerManager from './PlayerManager';
 import ConnectionManager from './ConnectionManager';
-
+import Plane from './Plane'
 export default class Main {
     constructor(container, connectionManager, roomID, numberOfPlayers) {
-        console.log('NUM', numberOfPlayers)
         this.isPlayerLeft = numberOfPlayers == 1;
 
         this.container = container;
@@ -30,11 +29,11 @@ export default class Main {
         //this.camera = new Camera(this.renderer.threeRenderer);
 
         this.camera1 = new Camera(30, window.innerWidth / 2, window.innerHeight);
-        this.camera1.position.set(-100,0,0)
+        this.camera1.position.set(-100, 0, 0)
         // this.camera1.lookAt(new Vector3(0, 0, 0));
 
         this.camera2 = new Camera(30, window.innerWidth / 2, window.innerHeight);
-        this.camera2.position.set(-100,0,0)
+        this.camera2.position.set(-100, 0, 0)
         // this.camera2.lookAt(new Vector3(0, 0, 0));
 
         this.camVect = new Vector3(-200, 0, 0);
@@ -45,11 +44,11 @@ export default class Main {
         this.isLoaded = null
         this.animation = null
 
-
+        this.plane = new Plane(this.scene)
 
         // GRID HELPER
-        const gridHelper = new GridHelper(1000, 10);
-        this.scene.add(gridHelper);
+        // const gridHelper = new GridHelper(1000, 10);
+        // this.scene.add(gridHelper);
 
         // STATS
         this.stats = new Stats();
@@ -106,6 +105,7 @@ export default class Main {
         this.light = new DirectionalLight(0xffffff, 10);
         this.light.position.set(3, 3, 50);
         this.light.intensity = 2
+        
         this.scene.add(this.light);
 
         this.views = [
@@ -124,7 +124,7 @@ export default class Main {
                 camera: this.camera2
             },
         ];
-    
+
         this.render();
     }
 
