@@ -107,13 +107,13 @@ class Socket {
                     this.highScoreDb.insert({
                         nick:room.currentPlayer.nick,
                         score: room.currentPlayer.score,
-                    })
+                    });
                     this.highScoreDb.insert({
                         nick:room.nextPlayer.nick,
                         score: room.nextPlayer.score,
-                    })
-
+                    });
                 }
+                socket.to(socket.gameRoom).emit('lives', socket.id, socket.lives);
             }
             room.numberOfAnswers += 1;
             if (room.numberOfAnswers >= 2) {
