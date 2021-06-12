@@ -12,7 +12,6 @@ class Socket {
     constructor(server) {
         this.roomsDb = Database.GetDatabase("rooms")
         this.highScoreDb = Database.GetDatabase("highScore")
-        console.log(this.roomsDb)
         this.io = new Server(server)
         this.io.on('connection', (socket) => this.onConnect(socket))
     }
@@ -113,7 +112,7 @@ class Socket {
                         score: room.nextPlayer.score,
                     });
                 }
-                socket.to(socket.gameRoom).emit('lives', socket.id, socket.lives);
+                this.io.to(socket.gameRoom).emit('lives', socket.id, socket.lives);
             }
             room.numberOfAnswers += 1;
             if (room.numberOfAnswers >= 2) {
