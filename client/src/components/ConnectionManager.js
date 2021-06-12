@@ -12,12 +12,19 @@ export default class ConnectionManager {
         this.socket.on("connect", () => this.onConnect());
         this.socket.on("disconnect", () => this.onDisconnect());
         this.socket.on("connection", () => this.onConnection());
-        this.socket.on("next_question", (socketID, question) => {
-            console.log(socketID, this.socket.id);
+        this.socket.on("next_question", (question) => {
             console.log(question)
             this.gui.showQuestion(question);
         });
         this.socket.on("emote", emoteName => this.playEnemyEmote(emoteName));
+
+        this.socket.on("lives", (socketID, lives) => {
+            console.log('lives',socketID,lives)
+        });
+
+        this.socket.on("set_score", (socketID, score) => {
+            console.log('set_score',socketID,score)
+        });
     }
 
     async onConnect() {
