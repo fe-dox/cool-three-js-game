@@ -3,7 +3,8 @@ import {
     Clock,
     Vector3,
     GridHelper,
-    DirectionalLight
+    DirectionalLight,
+    Color
 } from 'three';
 import { Scene } from 'three';
 import Renderer from './Renderer';
@@ -24,7 +25,18 @@ export default class Main {
         this.container = container;
         this.scene = new Scene();
         this.renderer = new Renderer(this.scene, container);
-        this.camera = new Camera(this.renderer.threeRenderer);
+        //this.renderer = new Renderer( container);
+        this.renderer.threeRenderer.autoClear = false
+        //this.camera = new Camera(this.renderer.threeRenderer);
+
+        this.camera1 = new Camera(30, window.innerWidth / 2, window.innerHeight);
+        this.camera1.position.set(-100,0,0)
+        // this.camera1.lookAt(new Vector3(0, 0, 0));
+
+        this.camera2 = new Camera(30, window.innerWidth / 2, window.innerHeight);
+        this.camera2.position.set(-100,0,0)
+        // this.camera2.lookAt(new Vector3(0, 0, 0));
+
         this.camVect = new Vector3(-200, 0, 0);
 
         // CONNECTION
@@ -70,9 +82,11 @@ export default class Main {
             this.player.animation = this.playerAnimation;
             this.enemy.animation = this.enemyAnimation;
 
+            this.connectionManager.enemy = this.enemy
+
             // GUI
             this.gui = new GUI(this.roomID, this.player, this.connectionManager);
-
+            this.connectionManager.gui = this.gui;
             this.playerAnimation.playAnim("crstand")
             this.enemyAnimation.playAnim("crstand")
             this.player.init()
@@ -93,9 +107,28 @@ export default class Main {
         this.light.position.set(3, 3, 50);
         this.light.intensity = 2
         this.scene.add(this.light);
-        this.counter = 0
+
+        this.views = [
+            {
+                left: 0,
+                bottom: 0,
+                width: 0.5,
+                height: 1,
+                camera: this.camera1
+            },
+            {
+                left: 0.5,
+                bottom: 0,
+                width: 0.5,
+                height: 1,
+                camera: this.camera2
+            },
+        ];
+    
         this.render();
     }
+
+
 
     render() {
         // STATS BEGIN
@@ -105,8 +138,7 @@ export default class Main {
         const delta = this.clock.getDelta();
         if (this.playerAnimation) this.playerAnimation.update(delta)
         if (this.enemyAnimation) this.enemyAnimation.update(delta)
-        this.renderer.render(this.scene, this.camera.threeCamera);
-
+        //this.renderer.render(this.scene, this.camera.threeCamera);
         if (this.player.mesh) {
 
             // if (Config.rotateLeft) {
@@ -128,13 +160,47 @@ export default class Main {
             // this.camera.threeCamera.position.y = camPos.y
             // this.camera.threeCamera.position.z = camPos.z
 
-            this.camera.threeCamera.position.x = 90
-            this.camera.threeCamera.position.y = 10
-            this.camera.threeCamera.position.z = 0
+            // this.camera1.position.x = 90
+            // this.camera1.position.y = 10
+            // this.camera1.position.z = 0
 
             //const modelVector = new Vector3(this.player.mesh.position.x, this.player.mesh.position.y, this.player.mesh.position.z)
-            // this.camera.threeCamera.lookAt(this.player.mesh.position)
-            this.camera.threeCamera.lookAt(new Vector3(0, 0, 0))
+            // this.renderer.threeRenderer.setViewport(0, 0, innerWidth / 2, innerHeight);
+
+
+
+            // if (this.player.mesh && this.enemy.mesh) {
+            //     this.camera1.lookAt(this.player.mesh.position)
+            //     this.camera2.lookAt(this.enemy.mesh.position)
+            // }
+
+            // this.views.forEach(view => {
+            //     const camera = view.camera;
+
+            // const left = Math.floor(window.innerWidth * view.left);
+            // const bottom = Math.floor(window.innerHeight * view.bottom);
+            // const width = Math.floor(window.innerWidth * view.width);
+            // const height = Math.floor(window.innerHeight * view.height);
+
+            //     this.renderer.threeRenderer.setViewport(left, bottom, width, height);
+            //     this.renderer.threeRenderer.setClearColor(new Color(255, 255, 255));
+            //     this.renderer.threeRenderer.render(this.scene, view.camera);
+
+            //     this.renderer.threeRenderer.render(this.scene, camera);
+            // });
+            this.renderer.threeRenderer.setClearColor(0xffffff);
+            this.views.forEach(view => {
+                const left = Math.floor(window.innerWidth * view.left);
+                const bottom = Math.floor(window.innerHeight * view.bottom);
+                const width = Math.floor(window.innerWidth * view.width);
+                const height = Math.floor(window.innerHeight * view.height);
+                this.renderer.threeRenderer.setViewport(left, bottom, width, height);
+                this.renderer.threeRenderer.render(this.scene, view.camera);
+                view.camera.position.x = 200;
+            })
+
+            this.camera1.lookAt(this.player.mesh.position)
+            this.camera2.lookAt(this.enemy.mesh.position)
         }
 
         // STATS END

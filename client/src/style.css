@@ -11,6 +11,9 @@ body {
   margin: 0;
   overflow: hidden;
 }
+#root{
+  margin: 0;
+}
 #main {
   position: absolute;
   height: 100vh;
@@ -121,4 +124,31 @@ input {
 }
 .emots-right {
   left: 75vw;
+}
+.player-panel{
+  width: 50vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  background: white;
+  color: black;
+}
+.player-panel-left{
+  left: 0;
+}
+.player-panel-right{
+  left: 50vw;
+}
+.questionDiv{
+  position: absolute;
+  top: 70vh;
+  font-size: 10px;
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }

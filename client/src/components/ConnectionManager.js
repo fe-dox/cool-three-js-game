@@ -2,20 +2,22 @@ import { io } from "socket.io-client";
 
 
 export default class ConnectionManager {
-    constructor(serverUrl, PORT) {
+    constructor(serverUrl, PORT, enemy) {
         this.player = undefined;
         this.enemy = undefined;
-
+        this.gui = undefined;
         this.serverUrl = serverUrl;
         this.socket = io(`http://${this.serverUrl}:${PORT}`);
 
         this.socket.on("connect", () => this.onConnect());
         this.socket.on("disconnect", () => this.onDisconnect());
         this.socket.on("connection", () => this.onConnection());
-        this.socket.on("next_question", () => this.nextQuestion());
-        this.socket.on("emote", (emoteName) =>{
-            console.log(emoteName)
+        this.socket.on("next_question", (socketID, question) => {
+            console.log(socketID, this.socket.id);
+            console.log(question)
+            this.gui.showQuestion(question);
         });
+        this.socket.on("emote", emoteName => this.playEnemyEmote(emoteName));
     }
 
     async onConnect() {
@@ -52,18 +54,10 @@ export default class ConnectionManager {
     }
 
     emote(emoteName) {
-        return new Promise((res, rej) => {
-            this.socket.emit('emote', emoteName, (data) => {
-                res(data);
-            });
-        })
+        this.socket.emit('emote', emoteName);
     }
 
-    playEnemyEmote() {
-
-    }
-
-    nextQuestion() {
-
+    playEnemyEmote(emoteName) {
+        this.enemy.animation.playAnim(emoteName);
     }
 }
