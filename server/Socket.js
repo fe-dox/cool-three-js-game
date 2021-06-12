@@ -98,18 +98,18 @@ class Socket {
             if (answer === room.lastQuestion.correctAnswer) {
                 let pts = room.lastQuestion.CalculateResult(now);
                 socket.points += pts;
-                this.io.to(socket.gameRoom).emit('set_score', socket.id, socket.score);
+                this.io.to(socket.gameRoom).emit('set_score', socket.id, socket.points);
             } else {
                 socket.lives -= 1;
                 if (socket.lives <= 0) {
                     this.io.emit('end_game', socket.id);
                     this.highScoreDb.insert({
                         nick:room.currentPlayer.nick,
-                        score: room.currentPlayer.score,
+                        score: room.currentPlayer.points,
                     });
                     this.highScoreDb.insert({
                         nick:room.nextPlayer.nick,
-                        score: room.nextPlayer.score,
+                        score: room.nextPlayer.points,
                     });
                 }
                 this.io.to(socket.gameRoom).emit('lives', socket.id, socket.lives);
