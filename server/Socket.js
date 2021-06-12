@@ -105,11 +105,11 @@ class Socket {
                     this.io.emit('end_game', socket.id);
                     this.highScoreDb.insert({
                         nick:room.currentPlayer.nick,
-                        score: room.currentPlayer.score,
+                        score: room.currentPlayer.points,
                     });
                     this.highScoreDb.insert({
                         nick:room.nextPlayer.nick,
-                        score: room.nextPlayer.score,
+                        score: room.nextPlayer.points,
                     });
                 }
                 this.io.to(socket.gameRoom).emit('lives', socket.id, socket.lives);
