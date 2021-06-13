@@ -7,7 +7,8 @@ export default class ConnectionManager {
         this.enemy = undefined;
         this.gui = undefined;
         this.serverUrl = serverUrl;
-        this.socket = io(`http://${this.serverUrl}:${PORT}`);
+        //this.socket = io(`http://${this.serverUrl}:${PORT}`);
+        this.socket = io(window.location.href);
 
         this.socket.on("connect", () => this.onConnect());
         this.socket.on("disconnect", () => this.onDisconnect());
