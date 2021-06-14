@@ -102,7 +102,7 @@ class Socket {
             } else {
                 socket.lives -= 1;
                 if (socket.lives <= 0) {
-                    this.io.emit('end_game', socket.id);
+                    this.io.to(socket.gameRoom).emit('end_game', socket.id);
                     this.highScoreDb.insert({
                         nick:room.currentPlayer.nick,
                         score: room.currentPlayer.points,
